@@ -1,60 +1,42 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.expected_conditions import visibility_of_element_located
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from base.base_class import Base
+from base_page.base_class import BasePage
 
 
-class SearchPage(Base):
-
-    def __init__(self, driver):
-        super().__init__(driver)
-        self.old_list = []
-
+class SearchPage(BasePage):
     # Locators
-    TIMEOUT_10 = 10
+
     BUTTON_SORT = (By.XPATH, "//*[@id='sort_by_dselect_container']")
     PRICE_DESC = (By.XPATH, "//*[@id='Price_DESC']")
     ITEMS = (By.XPATH, "//a[@data-gpnav='item']")
+    PRICE = (By.XPATH, "//a[@data-gpnav='item']//div[contains(@class,'final_price')]")
+    GRAY_BACKGROUND = (By.XPATH, "//*[contains(@style, 'opacity: 0.5')]")
+    RESULT = (By.XPATH, "//*[@id='search_result_container' and not(contains(@style, 'opacity: 0.5'))]")
 
-    # Getters
-    def get_button_sort(self):
-        return WebDriverWait(self.driver, self.TIMEOUT_10).until(
-            EC.visibility_of_element_located(self.BUTTON_SORT))
-
-    def get_price_desc(self):
-        return WebDriverWait(self.driver, self.TIMEOUT_10).until(
-            EC.visibility_of_element_located(self.PRICE_DESC))
-
-    def get_list_items(self, value):
-        all_list = WebDriverWait(self.driver, self.TIMEOUT_10).until(
-            EC.visibility_of_all_elements_located(self.ITEMS))
-        return [item for item in all_list[:value]]
-
-    def wait_for_list_update(self, old_list):
-        WebDriverWait(self.driver, self.TIMEOUT_10).until(
-            lambda d: [item.text for item in d.find_elements(*self.ITEMS)] != old_list
-        )
-
-    # Action
     def click_button_sort(self):
-        self.get_button_sort().click()
+        return self.wait_visibility_for_element(self.BUTTON_SORT).click()
 
     def click_price_desc(self):
-        self.get_price_desc().click()
+        return self.wait_visibility_for_element(self.PRICE_DESC).click()
 
-    def take_lists_items(self, value):
-        list_elements = self.get_list_items(value)
-        for item in list_elements:
-            print(item.text)
+    def wait_visible_gray_back(self):
+        return self.wait_presents_for_element(self.GRAY_BACKGROUND)
 
-    def sort(self, value):
-        self.old_list = [item.text for item in self.get_list_items(value)]
+    def wait_out_visible_gray_back(self):
+        return self.wait_presents_for_element(self.RESULT)
 
-    # Methods
+    def get_prices(self, value):
+        price_elements = self.wait_visibility_of_all_for_element(self.PRICE)
+        return [price.text for price in price_elements[:value]]
+
     def sort_price_desc(self, value):
-        self.sort(value)
+        unsorted_prices = self.get_prices(value)
         self.click_button_sort()
         self.click_price_desc()
-        self.wait_for_list_update(self.old_list)
-        self.take_lists_items(value)
+        self.wait_visible_gray_back()
+        self.wait_out_visible_gray_back()
+        sorted_price = self.get_prices(value)
+        return unsorted_prices, sorted_price

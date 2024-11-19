@@ -1,0 +1,10 @@
+{
+    "set1": {
+        "game1": "The Witcher",
+        "count1": 10
+    },
+    "set2": {
+        "game2": "Fallout",
+        "count2": 20
+    }
+}

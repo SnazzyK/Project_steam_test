@@ -4,7 +4,7 @@ from utilities.drivers import WebDriverSingleton
 
 
 @pytest.fixture(scope="session", autouse=True)
-def setup_browser():
+def driver():
     driver = WebDriverSingleton.get_driver()
     yield driver
     WebDriverSingleton.quit_driver()
