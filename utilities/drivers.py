@@ -1,15 +1,12 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from config.config_reader import ConfigReader
+from tests.test_1 import json_config
 
 
 class WebDriverSingleton:
     _instance = None
     _driver = None
-
-    file_config = "config/config.json"
-    json_config = ConfigReader(file_config)
 
     def __new__(cls):
         if cls._instance is None:
@@ -20,7 +17,7 @@ class WebDriverSingleton:
     def _initialize_driver(self):
         if self._driver is None:
             chrome_options = Options()
-            chrome_options.add_argument("--start-maximized")
+            chrome_options.add_argument(json_config.get_chrome_option_by_index(0))
             self.driver = webdriver.Chrome(options=chrome_options)
 
     @classmethod
