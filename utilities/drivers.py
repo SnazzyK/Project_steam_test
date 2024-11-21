@@ -1,7 +1,12 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from tests.test_1 import json_config
+from config.config_constains import FILE_CONFIG
+from config.config_reader import ConfigReader
+
+
+
+json_config = ConfigReader(FILE_CONFIG)
 
 
 class WebDriverSingleton:

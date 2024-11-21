@@ -1,9 +1,12 @@
 import pytest
 
+
 from utilities.drivers import WebDriverSingleton
 
 
-@pytest.fixture(scope="function", autouse=True)
+
+
+@pytest.fixture(scope="function", autouse=False)
 def driver():
     driver = WebDriverSingleton.get_driver()
     yield driver

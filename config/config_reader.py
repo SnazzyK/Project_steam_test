@@ -2,8 +2,6 @@ import json
 
 
 class ConfigReader:
-    FILE_CONFIG = "config/config.json"
-    FILE_DATA_TEST = "config/test_data.json"
 
     def __init__(self, file_path):
         self.file_path = file_path
@@ -26,6 +24,8 @@ class ConfigReader:
         else:
             return None
 
-    def get_data(self, set_key, game_key, count_key):
-        if game_key in self.data[set_key] and count_key in self.data[set_key]:
-            return self.data[set_key][game_key], self.data[set_key][count_key]
+    def get_data(self, set_key):
+        subset = self.data.get(set_key, {})
+        return subset.get("game"), subset.get("count")
+
+
