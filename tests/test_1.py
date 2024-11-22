@@ -1,12 +1,12 @@
 import pytest
 
-from config.config_reader import ConfigReader, FILE_CONFIG
+from config.data_reader import DataReader
 from pages.home_page import HomePage
 from pages.search_result_page import SearchPage
 
 FILE_DATA_TEST = "config/test_data.json"
-json_config = ConfigReader(FILE_CONFIG)
-json_data = ConfigReader(FILE_DATA_TEST)
+json_config = DataReader(DataReader.FILE_CONFIG)
+json_data = DataReader(FILE_DATA_TEST)
 
 
 @pytest.mark.parametrize(
@@ -18,7 +18,7 @@ json_data = ConfigReader(FILE_DATA_TEST)
 )
 def test_list_game_with_price_desc1(driver, game_name, game_of_number):
     hp = HomePage()
-    assert hp.check_ready_state()
+    hp.wait_ready_state()
     hp.search(game_name)
     srp = SearchPage()
     unsorted_price = srp.get_prices(game_of_number)

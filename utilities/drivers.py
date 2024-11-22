@@ -2,9 +2,9 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 
-from config.config_reader import ConfigReader, FILE_CONFIG
+from config.data_reader import DataReader
 
-json_config = ConfigReader(FILE_CONFIG)
+json_config = DataReader(DataReader.FILE_CONFIG)
 
 
 class WebDriverSingleton:

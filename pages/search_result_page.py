@@ -1,6 +1,6 @@
-from selenium.common import TimeoutException
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
+
 from base_page.base_page import BasePage
 
 from dataclasses import dataclass
@@ -31,10 +31,10 @@ class SearchPage(BasePage):
 
     def wait_background(self):
         self.wait_frequency.until(EC.presence_of_element_located(self.GRAY_BACKGROUND))
-        return self.wait.until(EC.presence_of_element_located(self.RESULT))
+        self.wait.until(EC.presence_of_element_located(self.RESULT))
 
     def get_prices(self, value):
-        elements = self.wait.until(EC.visibility_of_all_elements_located(self.PRICE))
+        elements = self.wait.until(EC.presence_of_all_elements_located(self.PRICE))
         prices = [PriceInfo(price.text, idx) for idx, price in enumerate(elements[:value])]
         return prices
 

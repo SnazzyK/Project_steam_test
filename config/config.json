@@ -1,5 +1,7 @@
 {
   "URL": "https://store.steampowered.com/",
+  "TIMEOUT": "10",
+  "poll_frequency":"0.1",
   "Chrome_options": [
     "--start-maximized",
     "--headless",
