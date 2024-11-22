@@ -1,10 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from config.config_constains import FILE_CONFIG
-from config.config_reader import ConfigReader
 
-
+from config.config_reader import ConfigReader, FILE_CONFIG
 
 json_config = ConfigReader(FILE_CONFIG)
 
@@ -22,7 +20,7 @@ class WebDriverSingleton:
     def _initialize_driver(self):
         if self._driver is None:
             chrome_options = Options()
-            chrome_options.add_argument(json_config.get_chrome_option_by_index(0))
+            chrome_options.add_argument(json_config.get_data("Chrome_options",0))
             self.driver = webdriver.Chrome(options=chrome_options)
 
     @classmethod

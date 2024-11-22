@@ -13,20 +13,15 @@ class HomePage(BasePage):
     SEARCH_FIELDS = (By.ID, "store_nav_search_term")
     BUTTON_SEARCH = (By.XPATH, "//*[@id= 'store_search_link']//img")
 
-    def check_ready_state(self):
-        page_load =  self.wait.until(
-            lambda driver: driver.execute_script("return document.readyState") == "complete"
-        )
-        return page_load
 
-    def get_search_fields(self, name):
+    def search_fields(self, name):
         return self.wait.until(EC.visibility_of_element_located(self.SEARCH_FIELDS)).send_keys(name)
 
-    def get_button_search(self):
-        return self.wait.until(EC.visibility_of_element_located(self.BUTTON_SEARCH)).click()
+    def button_search(self):
+         self.wait.until(EC.visibility_of_element_located(self.BUTTON_SEARCH)).click()
 
     # Methods
     def search(self, name):
         self.check_ready_state()
-        self.get_search_fields(name)
-        self.get_button_search()
+        self.search_fields(name)
+        self.button_search()

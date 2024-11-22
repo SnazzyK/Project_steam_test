@@ -1,13 +1,12 @@
 import pytest
 
-from config.config_constains import FILE_DATA_TEST, FILE_CONFIG
-from config.config_reader import ConfigReader
+from config.config_reader import ConfigReader, FILE_CONFIG
 from pages.home_page import HomePage
 from pages.search_result_page import SearchPage
 
+FILE_DATA_TEST = "config/test_data.json"
 json_config = ConfigReader(FILE_CONFIG)
 json_data = ConfigReader(FILE_DATA_TEST)
-EXPECTED_TITLE = "Expected Page Title"
 
 
 @pytest.mark.parametrize(
@@ -18,10 +17,11 @@ EXPECTED_TITLE = "Expected Page Title"
     ]
 )
 def test_list_game_with_price_desc1(driver, game_name, game_of_number):
-    driver.get(json_config.get_url())
     hp = HomePage()
-    assert hp.check_ready_state() == True
+    assert hp.check_ready_state()
     hp.search(game_name)
     srp = SearchPage()
-    unsorted_price, sorted_price = srp.sort_price_desc(game_of_number)
+    unsorted_price = srp.get_prices(game_of_number)
+    srp.sort_price_desc()
+    sorted_price = srp.get_prices(game_of_number)
     assert unsorted_price != sorted_price, f"Actual result:{sorted_price}\nExpected result:{sorted_price}"
